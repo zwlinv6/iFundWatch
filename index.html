@@ -1,0 +1,1496 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iFundWatch</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --panel-strong: #f0f4f7;
+      --text: #17212b;
+      --muted: #617080;
+      --faint: #8a96a3;
+      --line: #dbe2e8;
+      --accent: #176b87;
+      --accent-strong: #0e5269;
+      --green: #12805c;
+      --red: #c4362e;
+      --amber: #a56500;
+      --blue-soft: #e8f3f7;
+      --green-soft: #e8f6ef;
+      --red-soft: #fbecea;
+      --amber-soft: #fff4df;
+      --shadow: 0 16px 45px rgba(19, 31, 42, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-width: 320px;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      padding: 18px 0 20px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 7px;
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      line-height: 1;
+      transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
+      white-space: nowrap;
+    }
+
+    .button:hover {
+      border-color: #b7c5ce;
+      background: #fafcfd;
+    }
+
+    .button:active {
+      transform: translateY(1px);
+    }
+
+    .button.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .button.primary:hover {
+      border-color: var(--accent-strong);
+      background: var(--accent-strong);
+    }
+
+    .button.danger {
+      color: var(--red);
+    }
+
+    .button.icon {
+      width: 38px;
+      padding: 8px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-panel {
+      position: sticky;
+      top: 16px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-strong);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .panel-body {
+      padding: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--text);
+      padding: 8px 10px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(23, 107, 135, 0.14);
+    }
+
+    .form-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .import-row {
+      display: grid;
+      gap: 8px;
+      padding-top: 12px;
+      margin-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--faint);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .main {
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 750;
+      overflow-wrap: anywhere;
+    }
+
+    .metric-sub {
+      margin-top: 5px;
+      color: var(--faint);
+      font-size: 12px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: auto minmax(180px, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .tabs {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .tab {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px 12px;
+      min-width: 78px;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .status-line {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1060px;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+      text-align: right;
+      font-size: 13px;
+    }
+
+    th:first-child,
+    td:first-child,
+    th:nth-child(2),
+    td:nth-child(2) {
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      background: #fbfcfd;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr:hover {
+      background: #fbfdfe;
+    }
+
+    .fund-name {
+      display: grid;
+      gap: 4px;
+      min-width: 160px;
+    }
+
+    .name-line {
+      font-weight: 750;
+      overflow-wrap: anywhere;
+    }
+
+    .code-line {
+      color: var(--faint);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .badge.market {
+      background: #eef1f3;
+      color: var(--muted);
+    }
+
+    .number {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .positive {
+      color: var(--red);
+    }
+
+    .negative {
+      color: var(--green);
+    }
+
+    .neutral {
+      color: var(--muted);
+    }
+
+    .row-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .row-actions .button {
+      min-height: 31px;
+      padding: 6px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .empty {
+      padding: 36px 18px;
+      text-align: center;
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+    }
+
+    .empty strong {
+      color: var(--text);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      max-width: min(560px, calc(100vw - 32px));
+      background: #15212c;
+      color: #fff;
+      border-radius: 8px;
+      padding: 11px 14px;
+      box-shadow: 0 18px 50px rgba(14, 24, 34, 0.22);
+      font-size: 13px;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .stale {
+      color: var(--amber);
+    }
+
+    .error-text {
+      color: var(--red);
+      font-size: 12px;
+      line-height: 1.35;
+      max-width: 200px;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .form-panel {
+        position: static;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding: 14px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        width: 100%;
+      }
+
+      .status-line {
+        text-align: left;
+      }
+
+      .summary-grid,
+      .field-row,
+      .form-actions {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>iFundWatch</h1>
+        <p class="subtitle">本地持仓看板。数据保存在浏览器本地，行情来自天天基金和东方财富公开接口。</p>
+      </div>
+      <div class="top-actions">
+        <button class="button primary" id="refreshBtn" type="button" title="刷新全部行情">
+          <span aria-hidden="true">↻</span>
+          <span>刷新</span>
+        </button>
+        <button class="button" id="exportBtn" type="button" title="导出本地 JSON 备份">
+          <span aria-hidden="true">⇩</span>
+          <span>导出</span>
+        </button>
+        <button class="button" id="importBtn" type="button" title="导入 JSON 备份">
+          <span aria-hidden="true">⇧</span>
+          <span>导入</span>
+        </button>
+        <input class="file-input" id="importFile" type="file" accept="application/json,.json">
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel form-panel" aria-labelledby="formTitle">
+        <div class="panel-header">
+          <h2 class="panel-title" id="formTitle">添加基金</h2>
+        </div>
+        <div class="panel-body">
+          <form class="form-grid" id="fundForm">
+            <input id="recordId" type="hidden">
+            <div class="field-row">
+              <div class="field">
+                <label for="codeInput">基金代码</label>
+                <input id="codeInput" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="例如 161725" required>
+              </div>
+              <div class="field">
+                <label for="typeInput">类型</label>
+                <select id="typeInput" name="type">
+                  <option value="auto">自动识别</option>
+                  <option value="otc">场外基金</option>
+                  <option value="market">场内基金/ETF/LOF</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="nameInput">名称</label>
+              <input id="nameInput" name="name" placeholder="可选，行情返回后会自动补全">
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="sharesInput">份额</label>
+                <input id="sharesInput" name="shares" inputmode="decimal" placeholder="留空则加入观察">
+              </div>
+              <div class="field">
+                <label for="costInput">成本价</label>
+                <input id="costInput" name="costPrice" inputmode="decimal" placeholder="例如 1.2345">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="noteInput">分组/备注</label>
+              <textarea id="noteInput" name="note" placeholder="可写账户、策略或其他备注"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="button primary" id="saveBtn" type="submit">保存</button>
+              <button class="button" id="resetBtn" type="button">清空</button>
+            </div>
+          </form>
+
+          <div class="import-row">
+            <p class="hint">填写份额会进入“持仓”；不填份额会进入“观察”。场外估值不是官方最终净值，场内基金按交易所行情价估算市值。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="main">
+        <div class="summary-grid" aria-label="持仓概要">
+          <div class="panel metric">
+            <div class="metric-label">持仓市值</div>
+            <div class="metric-value number" id="totalMarketValue">--</div>
+            <div class="metric-sub" id="positionCount">0 只持仓</div>
+          </div>
+          <div class="panel metric">
+            <div class="metric-label">持仓成本</div>
+            <div class="metric-value number" id="totalCost">--</div>
+            <div class="metric-sub">按份额 × 成本价</div>
+          </div>
+          <div class="panel metric">
+            <div class="metric-label">浮动盈亏</div>
+            <div class="metric-value number" id="totalProfit">--</div>
+            <div class="metric-sub number" id="totalProfitRate">--</div>
+          </div>
+          <div class="panel metric">
+            <div class="metric-label">刷新状态</div>
+            <div class="metric-value" id="refreshState">待刷新</div>
+            <div class="metric-sub" id="nextRefresh">--</div>
+          </div>
+        </div>
+
+        <section class="panel" aria-label="基金列表">
+          <div class="toolbar">
+            <div class="tabs" role="tablist" aria-label="视图">
+              <button class="tab active" id="positionsTab" type="button" role="tab" aria-selected="true">持仓</button>
+              <button class="tab" id="watchlistTab" type="button" role="tab" aria-selected="false">观察</button>
+            </div>
+            <input id="searchInput" type="search" placeholder="搜索代码、名称或备注">
+            <div class="status-line" id="statusLine">本地数据 0 条</div>
+          </div>
+          <div class="table-wrap" id="tableWrap"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = "ifundwatch.v1";
+    const DEFAULT_STATE = { positions: [], watchlist: [] };
+    const MARKET_FIELDS = [
+      "f43", "f44", "f45", "f46", "f48", "f57", "f58", "f60", "f86", "f169", "f170"
+    ].join(",");
+
+    const state = {
+      data: loadData(),
+      quotes: new Map(),
+      activeView: "positions",
+      search: "",
+      refreshing: false,
+      refreshTimer: null,
+      countdownTimer: null,
+      nextRefreshAt: null
+    };
+
+    const els = {
+      form: document.getElementById("fundForm"),
+      formTitle: document.getElementById("formTitle"),
+      recordId: document.getElementById("recordId"),
+      code: document.getElementById("codeInput"),
+      type: document.getElementById("typeInput"),
+      name: document.getElementById("nameInput"),
+      shares: document.getElementById("sharesInput"),
+      cost: document.getElementById("costInput"),
+      note: document.getElementById("noteInput"),
+      saveBtn: document.getElementById("saveBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      refreshBtn: document.getElementById("refreshBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      importBtn: document.getElementById("importBtn"),
+      importFile: document.getElementById("importFile"),
+      search: document.getElementById("searchInput"),
+      positionsTab: document.getElementById("positionsTab"),
+      watchlistTab: document.getElementById("watchlistTab"),
+      tableWrap: document.getElementById("tableWrap"),
+      statusLine: document.getElementById("statusLine"),
+      toast: document.getElementById("toast"),
+      totalMarketValue: document.getElementById("totalMarketValue"),
+      totalCost: document.getElementById("totalCost"),
+      totalProfit: document.getElementById("totalProfit"),
+      totalProfitRate: document.getElementById("totalProfitRate"),
+      positionCount: document.getElementById("positionCount"),
+      refreshState: document.getElementById("refreshState"),
+      nextRefresh: document.getElementById("nextRefresh")
+    };
+
+    init();
+
+    function init() {
+      els.form.addEventListener("submit", handleSave);
+      els.resetBtn.addEventListener("click", resetForm);
+      els.refreshBtn.addEventListener("click", () => refreshAll({ manual: true }));
+      els.exportBtn.addEventListener("click", exportData);
+      els.importBtn.addEventListener("click", () => els.importFile.click());
+      els.importFile.addEventListener("change", importData);
+      els.search.addEventListener("input", () => {
+        state.search = els.search.value.trim().toLowerCase();
+        render();
+      });
+      els.positionsTab.addEventListener("click", () => setView("positions"));
+      els.watchlistTab.addEventListener("click", () => setView("watchlist"));
+
+      render();
+      refreshAll();
+      scheduleNextRefresh();
+      startCountdown();
+    }
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(DEFAULT_STATE);
+        const parsed = JSON.parse(raw);
+        return normalizeData(parsed);
+      } catch (error) {
+        console.warn("Failed to load local data", error);
+        return structuredClone(DEFAULT_STATE);
+      }
+    }
+
+    function normalizeData(input) {
+      const positions = Array.isArray(input?.positions) ? input.positions : [];
+      const watchlist = Array.isArray(input?.watchlist) ? input.watchlist : [];
+      return {
+        positions: positions.map(normalizeRecord).filter(Boolean),
+        watchlist: watchlist.map(normalizeRecord).filter(Boolean)
+      };
+    }
+
+    function normalizeRecord(record) {
+      const code = String(record?.code || "").replace(/\D/g, "").slice(0, 6);
+      if (!/^\d{6}$/.test(code)) return null;
+      const now = new Date().toISOString();
+      return {
+        id: String(record.id || crypto.randomUUID()),
+        code,
+        type: ["auto", "otc", "market"].includes(record.type) ? record.type : "auto",
+        name: String(record.name || "").trim(),
+        shares: toNullableNumber(record.shares),
+        costPrice: toNullableNumber(record.costPrice),
+        note: String(record.note || "").trim(),
+        createdAt: record.createdAt || now,
+        updatedAt: record.updatedAt || now
+      };
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+    }
+
+    function handleSave(event) {
+      event.preventDefault();
+      const code = els.code.value.trim().replace(/\D/g, "");
+      if (!/^\d{6}$/.test(code)) {
+        showToast("请输入 6 位基金代码");
+        els.code.focus();
+        return;
+      }
+
+      const record = {
+        id: els.recordId.value || crypto.randomUUID(),
+        code,
+        type: els.type.value,
+        name: els.name.value.trim(),
+        shares: parseInputNumber(els.shares.value),
+        costPrice: parseInputNumber(els.cost.value),
+        note: els.note.value.trim(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      const destination = record.shares && record.shares > 0 ? "positions" : "watchlist";
+      const existing = findRecord(record.id);
+      if (existing) {
+        record.createdAt = existing.record.createdAt;
+        removeRecord(record.id);
+      }
+
+      upsertByCode(destination, record);
+      saveData();
+      resetForm();
+      render();
+      refreshAll({ codes: [record.code] });
+      showToast(destination === "positions" ? "持仓已保存" : "观察已保存");
+    }
+
+    function upsertByCode(collection, record) {
+      const otherCollection = collection === "positions" ? "watchlist" : "positions";
+      state.data[otherCollection] = state.data[otherCollection].filter(item => item.code !== record.code);
+      const index = state.data[collection].findIndex(item => item.code === record.code);
+      if (index >= 0) {
+        state.data[collection][index] = {
+          ...state.data[collection][index],
+          ...record,
+          id: state.data[collection][index].id,
+          createdAt: state.data[collection][index].createdAt,
+          updatedAt: new Date().toISOString()
+        };
+      } else {
+        state.data[collection].push(record);
+      }
+    }
+
+    function setView(view) {
+      state.activeView = view;
+      els.positionsTab.classList.toggle("active", view === "positions");
+      els.watchlistTab.classList.toggle("active", view === "watchlist");
+      els.positionsTab.setAttribute("aria-selected", String(view === "positions"));
+      els.watchlistTab.setAttribute("aria-selected", String(view === "watchlist"));
+      render();
+    }
+
+    function render() {
+      renderSummary();
+      renderTable();
+      const total = state.data.positions.length + state.data.watchlist.length;
+      els.statusLine.textContent = `本地数据 ${total} 条`;
+    }
+
+    function renderSummary() {
+      let totalMarketValue = 0;
+      let totalCost = 0;
+      let pricedCount = 0;
+
+      for (const record of state.data.positions) {
+        const quote = state.quotes.get(record.code);
+        const price = quote?.price;
+        if (isFiniteNumber(record.shares) && isFiniteNumber(price)) {
+          totalMarketValue += record.shares * price;
+          pricedCount += 1;
+        }
+        if (isFiniteNumber(record.shares) && isFiniteNumber(record.costPrice)) {
+          totalCost += record.shares * record.costPrice;
+        }
+      }
+
+      const profit = totalMarketValue - totalCost;
+      const profitRate = totalCost > 0 ? profit / totalCost : null;
+      els.totalMarketValue.textContent = pricedCount ? formatMoney(totalMarketValue) : "--";
+      els.totalCost.textContent = totalCost ? formatMoney(totalCost) : "--";
+      els.totalProfit.textContent = pricedCount && totalCost ? formatMoney(profit, true) : "--";
+      els.totalProfit.className = `metric-value number ${valueClass(profit)}`;
+      els.totalProfitRate.textContent = isFiniteNumber(profitRate) ? `${formatPercent(profitRate * 100, true)} 总收益率` : "--";
+      els.totalProfitRate.className = `metric-sub number ${valueClass(profit)}`;
+      els.positionCount.textContent = `${state.data.positions.length} 只持仓，${pricedCount} 只有价格`;
+      els.refreshState.textContent = state.refreshing ? "刷新中" : "已就绪";
+    }
+
+    function renderTable() {
+      const records = filteredRecords();
+      if (!records.length) {
+        els.tableWrap.innerHTML = `
+          <div class="empty">
+            <strong>${state.activeView === "positions" ? "还没有持仓" : "还没有观察基金"}</strong>
+            <span>${state.search ? "没有匹配当前搜索条件的记录。" : "在左侧添加基金后，这里会显示实时行情。"}</span>
+          </div>
+        `;
+        return;
+      }
+
+      const isPositions = state.activeView === "positions";
+      const positionColumns = isPositions ? `
+        <th>份额</th>
+        <th>成本价</th>
+        <th>市值</th>
+        <th>盈亏</th>
+      ` : "";
+
+      els.tableWrap.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>基金</th>
+              <th>类型</th>
+              <th>当日实时净值估值</th>
+              <th>涨跌</th>
+              <th>参考净值/昨收</th>
+              <th>成交额</th>
+              <th>时间</th>
+              ${positionColumns}
+              <th>备注</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${records.map(record => renderRow(record, isPositions)).join("")}
+          </tbody>
+        </table>
+      `;
+      bindRowActions();
+    }
+
+    function filteredRecords() {
+      return state.data[state.activeView].filter(record => {
+        if (!state.search) return true;
+        const quote = state.quotes.get(record.code);
+        const haystack = [
+          record.code,
+          record.name,
+          record.note,
+          quote?.name
+        ].join(" ").toLowerCase();
+        return haystack.includes(state.search);
+      });
+    }
+
+    function renderRow(record, isPositions) {
+      const quote = state.quotes.get(record.code);
+      const displayName = escapeHtml(quote?.name || record.name || "未命名基金");
+      const displayType = quote?.kind || record.type;
+      const price = quote?.price;
+      const intradayEstimate = quote?.kind === "otc" ? quote?.intradayEstimate : quote?.price;
+      const intradayEstimateLabel = quote?.kind === "market" ? "场内最新价" : "盘中估值";
+      const change = quote?.changePercent;
+      const reference = quote?.kind === "market" ? quote.previousClose : quote?.nav;
+      const referenceLabel = quote?.kind === "market" ? "昨收" : quote?.navDate || "净值";
+      const marketValue = isFiniteNumber(record.shares) && isFiniteNumber(price) ? record.shares * price : null;
+      const cost = isFiniteNumber(record.shares) && isFiniteNumber(record.costPrice) ? record.shares * record.costPrice : null;
+      const profit = isFiniteNumber(marketValue) && isFiniteNumber(cost) ? marketValue - cost : null;
+      const profitRate = isFiniteNumber(profit) && cost > 0 ? (profit / cost) * 100 : null;
+      const error = quote?.error ? `<div class="error-text">${escapeHtml(quote.error)}</div>` : "";
+      const actionLabel = isPositions ? "转观察" : "转持仓";
+      const positionCells = isPositions ? `
+        <td class="number">${formatNumber(record.shares)}</td>
+        <td class="number">${formatNumber(record.costPrice, 4)}</td>
+        <td class="number">${isFiniteNumber(marketValue) ? formatMoney(marketValue) : "--"}</td>
+        <td>
+          <div class="number ${valueClass(profit)}">${isFiniteNumber(profit) ? formatMoney(profit, true) : "--"}</div>
+          <div class="code-line number ${valueClass(profit)}">${isFiniteNumber(profitRate) ? formatPercent(profitRate, true) : ""}</div>
+        </td>
+      ` : "";
+
+      return `
+        <tr data-id="${record.id}">
+          <td>
+            <div class="fund-name">
+              <div class="name-line">${displayName}</div>
+              <div class="code-line">${record.code}</div>
+            </div>
+          </td>
+          <td>${typeBadge(displayType)}</td>
+          <td>
+            <div class="number">${isFiniteNumber(intradayEstimate) ? formatNumber(intradayEstimate, 4) : "--"}</div>
+            <div class="code-line">${escapeHtml(intradayEstimateLabel)}</div>
+            ${error}
+          </td>
+          <td>
+            <div class="number ${valueClass(change)}">${isFiniteNumber(change) ? formatPercent(change, true) : "--"}</div>
+            <div class="code-line number ${valueClass(quote?.changeAmount)}">${isFiniteNumber(quote?.changeAmount) ? formatNumber(quote.changeAmount, 4, true) : ""}</div>
+          </td>
+          <td>
+            <div class="number">${isFiniteNumber(reference) ? formatNumber(reference, 4) : "--"}</div>
+            <div class="code-line">${escapeHtml(referenceLabel)}</div>
+          </td>
+          <td class="number">${isFiniteNumber(quote?.turnover) ? formatTurnover(quote.turnover) : "--"}</td>
+          <td>
+            <div>${escapeHtml(quote?.time || "--")}</div>
+            <div class="code-line ${quote?.stale ? "stale" : ""}">${quote?.stale ? "可能非交易时段" : ""}</div>
+          </td>
+          ${positionCells}
+          <td>${escapeHtml(record.note || "--")}</td>
+          <td>
+            <div class="row-actions">
+              <button class="button" type="button" data-action="edit">编辑</button>
+              <button class="button" type="button" data-action="move">${actionLabel}</button>
+              <button class="button danger" type="button" data-action="delete">删除</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function bindRowActions() {
+      els.tableWrap.querySelectorAll("[data-action]").forEach(button => {
+        button.addEventListener("click", event => {
+          const row = event.target.closest("tr[data-id]");
+          const id = row?.dataset.id;
+          const action = event.target.dataset.action;
+          if (!id) return;
+          if (action === "edit") editRecord(id);
+          if (action === "move") moveRecord(id);
+          if (action === "delete") deleteRecord(id);
+        });
+      });
+    }
+
+    function editRecord(id) {
+      const found = findRecord(id);
+      if (!found) return;
+      const record = found.record;
+      els.recordId.value = record.id;
+      els.code.value = record.code;
+      els.type.value = record.type;
+      els.name.value = record.name || "";
+      els.shares.value = isFiniteNumber(record.shares) ? String(record.shares) : "";
+      els.cost.value = isFiniteNumber(record.costPrice) ? String(record.costPrice) : "";
+      els.note.value = record.note || "";
+      els.formTitle.textContent = "编辑基金";
+      els.saveBtn.textContent = "更新";
+      els.code.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function moveRecord(id) {
+      const found = findRecord(id);
+      if (!found) return;
+      const target = found.collection === "positions" ? "watchlist" : "positions";
+      const record = {
+        ...found.record,
+        updatedAt: new Date().toISOString()
+      };
+      if (target === "watchlist") {
+        record.shares = null;
+      } else if (!isFiniteNumber(record.shares)) {
+        record.shares = 1;
+      }
+      removeRecord(id);
+      state.data[target].push(record);
+      saveData();
+      setView(target);
+      render();
+      showToast(target === "positions" ? "已转为持仓，可编辑份额" : "已转入观察");
+    }
+
+    function deleteRecord(id) {
+      const found = findRecord(id);
+      if (!found) return;
+      const name = found.record.name || found.record.code;
+      if (!confirm(`删除 ${name}？`)) return;
+      removeRecord(id);
+      saveData();
+      render();
+      showToast("已删除");
+    }
+
+    function findRecord(id) {
+      for (const collection of ["positions", "watchlist"]) {
+        const record = state.data[collection].find(item => item.id === id);
+        if (record) return { collection, record };
+      }
+      return null;
+    }
+
+    function removeRecord(id) {
+      state.data.positions = state.data.positions.filter(item => item.id !== id);
+      state.data.watchlist = state.data.watchlist.filter(item => item.id !== id);
+    }
+
+    function resetForm() {
+      els.form.reset();
+      els.recordId.value = "";
+      els.type.value = "auto";
+      els.formTitle.textContent = "添加基金";
+      els.saveBtn.textContent = "保存";
+    }
+
+    async function refreshAll(options = {}) {
+      const records = [...state.data.positions, ...state.data.watchlist];
+      const targetCodes = options.codes ? new Set(options.codes) : null;
+      const targetRecords = targetCodes ? records.filter(record => targetCodes.has(record.code)) : records;
+      if (!targetRecords.length) {
+        render();
+        return;
+      }
+
+      state.refreshing = true;
+      els.refreshBtn.disabled = true;
+      renderSummary();
+
+      const uniqueByCode = [...new Map(targetRecords.map(record => [record.code, record])).values()];
+      for (const record of uniqueByCode) {
+        const quote = await fetchQuote(record);
+        state.quotes.set(record.code, quote);
+        if (quote.name && !record.name) {
+          record.name = quote.name;
+          record.updatedAt = new Date().toISOString();
+        }
+      }
+
+      saveData();
+      state.refreshing = false;
+      els.refreshBtn.disabled = false;
+      scheduleNextRefresh();
+      render();
+      if (options.manual) showToast("行情已刷新");
+    }
+
+    async function fetchQuote(record) {
+      try {
+        if (record.type === "otc") return await fetchOtcQuote(record.code);
+        if (record.type === "market") return await fetchMarketQuote(record.code);
+        try {
+          return await fetchOtcQuote(record.code);
+        } catch (otcError) {
+          try {
+            return await fetchMarketQuote(record.code);
+          } catch (marketError) {
+            throw new Error(`${otcError.message}; ${marketError.message}`);
+          }
+        }
+      } catch (error) {
+        return {
+          code: record.code,
+          name: record.name,
+          kind: record.type,
+          price: null,
+          changePercent: null,
+          time: "",
+          error: "获取失败，代码或类型可能不匹配"
+        };
+      }
+    }
+
+    async function fetchOtcQuote(code) {
+      const data = await fetchOtcJsonp(`https://fundgz.1234567.com.cn/js/${code}.js?rt=${Date.now()}`);
+      if (!data?.fundcode) throw new Error("场外接口返回为空");
+      const intradayEstimate = toNullableNumber(data.gsz);
+      const nav = toNullableNumber(data.dwjz);
+      const price = intradayEstimate ?? nav;
+      return {
+        code,
+        name: data.name || "",
+        kind: "otc",
+        price,
+        intradayEstimate,
+        nav,
+        navDate: data.jzrq || "",
+        changePercent: toNullableNumber(data.gszzl),
+        changeAmount: isFiniteNumber(price) && isFiniteNumber(nav) ? price - nav : null,
+        turnover: null,
+        time: data.gztime || data.jzrq || "",
+        stale: !isTradingNow(),
+        raw: data
+      };
+    }
+
+    async function fetchMarketQuote(code) {
+      const preferred = code.startsWith("5") || code.startsWith("6") ? ["1", "0"] : ["0", "1"];
+      let lastError = null;
+      for (const market of preferred) {
+        try {
+          const callbackName = `ifundwatchMarket${Date.now()}${Math.floor(Math.random() * 100000)}`;
+          const url = `https://push2.eastmoney.com/api/qt/stock/get?cb=${callbackName}&secid=${market}.${code}&fields=${MARKET_FIELDS}&_=${Date.now()}`;
+          const data = await fetchJsonp(url, callbackName, 4500);
+          if (data?.rc !== 0 || !data?.data) throw new Error("场内接口无数据");
+          const row = data.data;
+          const price = eastmoneyPrice(row.f43);
+          const previousClose = eastmoneyPrice(row.f60);
+          if (!isFiniteNumber(price)) throw new Error("场内价格为空");
+          return {
+            code,
+            name: row.f58 || "",
+            kind: "market",
+            price,
+            previousClose,
+            changePercent: eastmoneyPercent(row.f170),
+            changeAmount: eastmoneyPrice(row.f169),
+            turnover: toNullableNumber(row.f48),
+            time: formatEastmoneyTime(row.f86),
+            stale: !isTradingNow(),
+            raw: row
+          };
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      try {
+        return await fetchTencentMarketQuote(code, preferred);
+      } catch (error) {
+        lastError = error;
+      }
+      throw lastError || new Error("场内接口无数据");
+    }
+
+    async function fetchTencentMarketQuote(code, preferredMarkets) {
+      const prefixes = preferredMarkets.map(market => market === "1" ? "sh" : "sz");
+      let lastError = null;
+      for (const prefix of prefixes) {
+        try {
+          const key = `v_${prefix}${code}`;
+          await loadScript(`https://qt.gtimg.cn/q=${prefix}${code}&_=${Date.now()}`, "gbk", 4500);
+          const raw = window[key];
+          if (!raw) throw new Error("腾讯接口无数据");
+          const fields = String(raw).split("~");
+          const price = toNullableNumber(fields[3]);
+          const previousClose = toNullableNumber(fields[4]);
+          if (!isFiniteNumber(price) || !isFiniteNumber(previousClose)) throw new Error("腾讯价格为空");
+          const changeAmount = toNullableNumber(fields[31]) ?? (price - previousClose);
+          const changePercent = toNullableNumber(fields[32]) ?? (previousClose ? (changeAmount / previousClose) * 100 : null);
+          const turnover = toNullableNumber(fields[35]?.split("/")[2]) ?? multiplyNullable(toNullableNumber(fields[37]), 10000);
+          return {
+            code,
+            name: fields[1] || "",
+            kind: "market",
+            price,
+            previousClose,
+            changePercent,
+            changeAmount,
+            turnover,
+            time: formatCompactTime(fields[30]),
+            stale: !isTradingNow(),
+            raw: fields
+          };
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw lastError || new Error("腾讯接口无数据");
+    }
+
+    function fetchOtcJsonp(url) {
+      const previous = window.jsonpgz;
+      return fetchJsonp(url, "jsonpgz").finally(() => {
+        if (previous === undefined) {
+          delete window.jsonpgz;
+        } else {
+          window.jsonpgz = previous;
+        }
+      });
+    }
+
+    function fetchJsonp(url, callbackName, timeoutMs = 12000) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        const timeout = window.setTimeout(() => {
+          cleanup();
+          reject(new Error("JSONP 请求超时"));
+        }, timeoutMs);
+
+        function cleanup() {
+          window.clearTimeout(timeout);
+          script.remove();
+          if (callbackName !== "jsonpgz") delete window[callbackName];
+        }
+
+        window[callbackName] = data => {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("JSONP 加载失败"));
+        };
+        script.src = url;
+        document.head.appendChild(script);
+      });
+    }
+
+    function loadScript(url, charset, timeoutMs = 12000) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        const timeout = window.setTimeout(() => {
+          cleanup();
+          reject(new Error("脚本请求超时"));
+        }, timeoutMs);
+
+        function cleanup() {
+          window.clearTimeout(timeout);
+          script.remove();
+        }
+
+        script.onload = () => {
+          cleanup();
+          resolve();
+        };
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("脚本加载失败"));
+        };
+        if (charset) script.charset = charset;
+        script.src = url;
+        document.head.appendChild(script);
+      });
+    }
+
+    function scheduleNextRefresh() {
+      if (state.refreshTimer) clearTimeout(state.refreshTimer);
+      const delay = refreshDelayMs();
+      state.nextRefreshAt = Date.now() + delay;
+      state.refreshTimer = setTimeout(() => refreshAll(), delay);
+      updateCountdown();
+    }
+
+    function refreshDelayMs() {
+      return isTradingNow() ? 30 * 1000 : 5 * 60 * 1000;
+    }
+
+    function startCountdown() {
+      if (state.countdownTimer) clearInterval(state.countdownTimer);
+      state.countdownTimer = setInterval(updateCountdown, 1000);
+      updateCountdown();
+    }
+
+    function updateCountdown() {
+      if (!state.nextRefreshAt) {
+        els.nextRefresh.textContent = "--";
+        return;
+      }
+      const remaining = Math.max(0, state.nextRefreshAt - Date.now());
+      els.nextRefresh.textContent = `下次刷新 ${formatDuration(remaining)}`;
+    }
+
+    function isTradingNow(date = new Date()) {
+      const day = date.getDay();
+      if (day === 0 || day === 6) return false;
+      const minutes = date.getHours() * 60 + date.getMinutes();
+      const morning = minutes >= 9 * 60 + 30 && minutes <= 11 * 60 + 30;
+      const afternoon = minutes >= 13 * 60 && minutes <= 15 * 60;
+      return morning || afternoon;
+    }
+
+    function exportData() {
+      const payload = {
+        app: "iFundWatch",
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        ...state.data
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `ifundwatch-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showToast("JSON 备份已导出");
+    }
+
+    async function importData(event) {
+      const file = event.target.files?.[0];
+      event.target.value = "";
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        const data = normalizeData(parsed);
+        if (!data.positions.length && !data.watchlist.length) {
+          showToast("导入文件里没有有效基金记录");
+          return;
+        }
+        if (!confirm("导入会替换当前本地数据，继续吗？")) return;
+        state.data = data;
+        state.quotes.clear();
+        saveData();
+        resetForm();
+        render();
+        refreshAll();
+        showToast("导入完成");
+      } catch (error) {
+        console.error(error);
+        showToast("导入失败，请确认是 iFundWatch JSON 备份");
+      }
+    }
+
+    function typeBadge(type) {
+      if (type === "otc") return `<span class="badge">场外</span>`;
+      if (type === "market") return `<span class="badge market">场内</span>`;
+      return `<span class="badge market">自动</span>`;
+    }
+
+    function toNullableNumber(value) {
+      if (value === null || value === undefined || value === "") return null;
+      const number = Number(String(value).replace(/,/g, ""));
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function parseInputNumber(value) {
+      const parsed = toNullableNumber(value);
+      return parsed && parsed > 0 ? parsed : null;
+    }
+
+    function eastmoneyPrice(value) {
+      const parsed = toNullableNumber(value);
+      return parsed === null ? null : parsed / 1000;
+    }
+
+    function eastmoneyPercent(value) {
+      const parsed = toNullableNumber(value);
+      return parsed === null ? null : parsed / 100;
+    }
+
+    function formatEastmoneyTime(value) {
+      const text = String(value || "");
+      if (/^\d{10}$/.test(text)) {
+        return formatDateTime(new Date(Number(text) * 1000));
+      }
+      if (!/^\d{10,14}$/.test(text)) return "";
+      const padded = text.padEnd(14, "0");
+      return `${padded.slice(0, 4)}-${padded.slice(4, 6)}-${padded.slice(6, 8)} ${padded.slice(8, 10)}:${padded.slice(10, 12)}:${padded.slice(12, 14)}`;
+    }
+
+    function formatCompactTime(value) {
+      const text = String(value || "");
+      if (!/^\d{14}$/.test(text)) return "";
+      return `${text.slice(0, 4)}-${text.slice(4, 6)}-${text.slice(6, 8)} ${text.slice(8, 10)}:${text.slice(10, 12)}:${text.slice(12, 14)}`;
+    }
+
+    function formatDateTime(date) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+      const pad = value => String(value).padStart(2, "0");
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    }
+
+    function isFiniteNumber(value) {
+      return typeof value === "number" && Number.isFinite(value);
+    }
+
+    function multiplyNullable(value, multiplier) {
+      return isFiniteNumber(value) ? value * multiplier : null;
+    }
+
+    function formatNumber(value, digits = 2, signed = false) {
+      if (!isFiniteNumber(value)) return "--";
+      const formatter = new Intl.NumberFormat("zh-CN", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      });
+      const prefix = signed && value > 0 ? "+" : "";
+      return `${prefix}${formatter.format(value)}`;
+    }
+
+    function formatMoney(value, signed = false) {
+      if (!isFiniteNumber(value)) return "--";
+      const formatter = new Intl.NumberFormat("zh-CN", {
+        style: "currency",
+        currency: "CNY",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      const formatted = formatter.format(Math.abs(value));
+      if (!signed) return formatter.format(value);
+      if (value > 0) return `+${formatted}`;
+      if (value < 0) return `-${formatted}`;
+      return formatter.format(0);
+    }
+
+    function formatPercent(value, signed = false) {
+      if (!isFiniteNumber(value)) return "--";
+      const prefix = signed && value > 0 ? "+" : "";
+      return `${prefix}${formatNumber(value, 2)}%`;
+    }
+
+    function formatTurnover(value) {
+      if (!isFiniteNumber(value)) return "--";
+      if (Math.abs(value) >= 100000000) return `${formatNumber(value / 100000000, 2)} 亿`;
+      if (Math.abs(value) >= 10000) return `${formatNumber(value / 10000, 2)} 万`;
+      return formatNumber(value, 2);
+    }
+
+    function formatDuration(ms) {
+      const seconds = Math.ceil(ms / 1000);
+      if (seconds < 60) return `${seconds} 秒`;
+      const minutes = Math.floor(seconds / 60);
+      const rest = seconds % 60;
+      return `${minutes} 分 ${String(rest).padStart(2, "0")} 秒`;
+    }
+
+    function valueClass(value) {
+      if (!isFiniteNumber(value) || value === 0) return "neutral";
+      return value > 0 ? "positive" : "negative";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        els.toast.classList.remove("show");
+      }, 2600);
+    }
+  </script>
+</body>
+</html>
